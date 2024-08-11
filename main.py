@@ -57,7 +57,7 @@ async def aitext(message: Message):
 
 @dp.message(Command('help'))
 async def help(message: Message):
-    await message.answer(f"Этот бот умеет выполнять следующие команды:\n/help - помощь\n/start - запуск бота\n/photo - случайное фото\n Что такое ИИ? - информация по запросу\n Примечание: бот реагирует на отправку фото")
+    await message.answer(f"Этот бот умеет выполнять следующие команды:\n/help - помощь\n/start - запуск бота\n/photo - случайное фото\n Что такое ИИ? - информация по запросу\n /weather - погода \n Примечание: бот реагирует на отправку фото")
 
 @dp.message(CommandStart())
 async def start(message: Message):
