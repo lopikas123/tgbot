@@ -4,10 +4,12 @@ import requests
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import CommandStart, Command
 import logging
-from aiogram.types import Message, FSInputFile
+
+from aiogram.types import Message, FSInputFile, CallbackQuery
 from googletrans import Translator
 from config import TOKEN
 from gtts import gTTS
+import keyboards as kb
 import os
 
 
@@ -110,8 +112,57 @@ async def aitext(message: Message):
 #ответ на привет
     @dp.message()
     async def start(message: Message):
-        if message.text.lower() == "привет":
+        if message.text.lower() == "Привет":
             await message.answer(f"Привет, {message.from_user.full_name}!")
+
+
+
+#кнопки
+#привет
+@dp.message(F.text == "Привет")
+async def main(message: Message):
+    await message.answer(f"Привет, {message.from_user.full_name}!")
+#пока
+@dp.message(F.text == "Пока")
+async def main(message: Message):
+    await message.answer(f"Пока, {message.from_user.full_name}!")
+
+#кнопки на сайты
+#@dp.message(Command('links'))
+#async def links(message: types.Message):
+ #       await message.reply("Ссылки на сайты", reply_markup= await kb.links_keyboard())
+
+#кнопки на сайты
+
+@dp.message(Command('links'))
+async def links(message: types.Message):
+    await message.answer("Ссылки на сайты", reply_markup=kb.inline_keyboard_test)
+
+#кнопки на сайты
+
+@dp.message(Command('dynamic'))
+async def dynamic(message: types.Message):
+       await message.answer("Нажмите чтобы продолжить", reply_markup=kb.inline_keyboard)
+
+@dp.callback_query(F.data == "dinamics")
+async def dinamics(callback: CallbackQuery):
+    await callback.answer("Опции прогружаються", show_alert=True)
+    await callback.message.edit_text("Выберите опцию", reply_markup=await kb.test_keyboard())
+
+@dp.callback_query(F.data == "opt1")
+async def dinamics(callback: CallbackQuery):
+    await callback.answer("Новости подгружаються", show_alert=True)
+    await callback.message.edit_text("Вы выбрали опцию 1")
+
+@dp.callback_query(F.data == "opt2")
+async def dinamics(callback: CallbackQuery):
+    await callback.answer("Новости подгружаються", show_alert=True)
+    await callback.message.edit_text("Вы выбрали опцию 2")
+@dp.message(F.data == "test")
+async def test(message: Message, callback: CallbackQuery):
+    await callback.answer("Новости подгружаються", show_alert=True)
+    await message.edit_text("Обработка нажатия на кнопку")
+#старт
 
 
 #помощь
